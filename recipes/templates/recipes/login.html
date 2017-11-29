@@ -1,0 +1,23 @@
+{% extends 'recipes/base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+    <div class="card card-login">
+        <div class="card-block">
+            <p>
+            {% if info %} {{ info }} {% endif %}
+            {% if errors %} {{ errors }} {% endif %}
+            </p>
+            <form id="login-form" method="post" action="{% url 'login' %}">
+                <div class="form-group">
+                    <input class="form-control" name="username" id="Username" placeholder="Enter Your Username" type="text">
+                    <input class="form-control" name="password" id="Password" placeholder="Enter Your Password" type="password">
+                    {# <p class="text-right"><a href="{% url 'reset_password_page' %}">Reset Password</a></p> #}
+                    <button id="login" class="btn btn-lg btn-primary btn-block" tpye="submit" value="Submit">Login</button>
+                </div>
+                {% csrf_token %}
+            </form>
+        </div>
+    </div>
+{% endblock %}
