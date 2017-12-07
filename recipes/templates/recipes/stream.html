@@ -8,8 +8,8 @@
 {% block content %}
 {% if errors %} {{ errors }} {% endif %}
 <div class="row">
-    <div class="card">
-        <div class="card-block">
+    <div class="card" style="width: 20rem;">
+        <div class="card-body">
             {% include 'recipes/picture_and_name.html' %}
             <form method="post" action="{% url 'addContent' %}">
                 <textarea maxlength="42" type="text" name="text" class="form-control" placeholder="What's in your mind?"></textarea>
@@ -25,8 +25,9 @@
             </form>
         </div>
     </div>
+
     <div id="content-items">
         {% include 'recipes/content.html' %}
-        </div>
+    </div>
 </div>
 {% endblock %}

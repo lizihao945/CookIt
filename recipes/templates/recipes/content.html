@@ -1,25 +1,17 @@
 {% for content in contents %}
-<div class="card content-item" id="content_{{ content.pk }}">
-    <div class="card-block">
-        <div class="row">
-            <div class="col-xs-7">
-                {% include 'recipes/picture_and_name.html' with bloguser=content.user.bloguser %}
-                <p>
-                    {{ content.created }}
-                </p>
-            </div>
-        </div>
-        <div class="card-block">
-            <p class="card-text">
-                {{ content.text }}
-            </p>
-            <hr>
-            <div class="row">
-                <div class="col-xs-10">
-                    <a href="#"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span></a>
-                </div>
-            </div>
-        </div>
-    </div>
+
+<div class="card" id="content_{{ content.pk }}" style="width: 20rem;">
+  <div class="card-header">
+      {% include 'recipes/picture_and_name.html' with bloguser=content.user.bloguser %}
+  </div>
+  <div class="card-body">
+    <!-- <h4 class="card-title">Card title</h4> -->
+    <!-- <h6 class="card-subtitle mb-2 text-muted"> Card </h6> -->
+    <p class="card-text"> content.text </p>
+    <p class="card-text"><small class="text-muted"> {{ content.created }} </small></p>
+    <!-- <a href="#" class="card-link">Card link</a> -->
+    <a href="#"> <span class="glyphicon glyphicon-heart" aria-hidden="true"></span> </a>
+  </div>
 </div>
+
 {% endfor %}
