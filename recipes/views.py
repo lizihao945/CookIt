@@ -75,8 +75,11 @@ def logout(request):
 
 def home(request):
   context = {}
+  bloguser = Bloguser.objects.get(user=request.user)
+  context['bloguser'] = bloguser
   context['page'] = 'home'
   context['contents'] = list(Content.objects.order_by('-created'))
+  context['badges'] = ['Editor', 'Scholar']
   return render(request, 'recipes/stream.html', context)
 
 @login_required
