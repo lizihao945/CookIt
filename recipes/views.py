@@ -40,7 +40,7 @@ def register(request):
         bloguser = Bloguser(user=user)
         bloguser.save()
 
-        return redirect('stream')
+        return redirect('home')
       except IntegrityError as e:
         errors.append(e)
         context['form'] = form
@@ -64,7 +64,7 @@ def login(request):
     user = authenticate(username=username, password=password)
     if user is not None:
       auth.login(request, user)
-      return redirect('stream')
+      return redirect('home')
     else:
       errors.append('authentication failed')
       return render(request, 'recipes/login.html', context)
@@ -75,16 +75,16 @@ def logout(request):
 
 def home(request):
   context = {}
-  context['stream'] = 'stream'
+  context['page'] = 'home'
   context['contents'] = list(Content.objects.order_by('-created'))
   return render(request, 'recipes/stream.html', context)
 
 @login_required
-def stream(request):
+def myRecipes(request):
   context = {}
   bloguser = Bloguser.objects.get(user=request.user)
   context['bloguser'] = bloguser
-  context['stream'] = 'stream'
+  context['page'] = 'myRecipes'
   context['contents'] = list(Content.objects.order_by('-created'))
   return render(request, 'recipes/stream.html', context)
 
@@ -105,12 +105,12 @@ def addContent(request):
         return render(request, 'recipes/stream.html', context)
       context['user'] = request.user
       context['contents'] = Content.objects.all()
-      return redirect('stream')
+      return redirect('myRecipes')
     else:
       errors.append(form.errors)
       return render(request, 'recipes/stream.html', context)
   else:
-    return redirect('stream')
+    return redirect('myRecipes')
 
 @login_required
 def deleteContent(request, contentId):
@@ -122,4 +122,4 @@ def deleteContent(request, contentId):
     pass
 
   context['contents'] = Content.objects.all()
-  return render(request, 'recipes/stream.html', context)
+  return redirect('home')
