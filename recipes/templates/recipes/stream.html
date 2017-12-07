@@ -1,0 +1,33 @@
+{% extends 'recipes/base.html' %}
+{% load staticfiles %}
+
+{% block extra_head %}
+<script src="{% static "js/recipes/stream.js" %}" type="text/javascript"></script>
+{% endblock %}
+{% block title %}Stream{% endblock %}
+
+{% block navbar %}{% include 'recipes/navbar.html' with active=stream %}{% endblock %}
+
+{% block content %}
+    {% if errors %} {{ errors }} {% endif %}
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-block">
+                    {% include 'recipes/picture_and_name.html' %}
+                    <form method="post" action="{% url 'addContent' %}">
+                        <textarea maxlength="42" type="text" name="text" class="form-control" placeholder="What's in your mind?"></textarea>
+                        <div class="text-right">
+                            <br>
+                            <button id="Post" class="btn btn-primary" type="submit" value="Submit">POST</button>
+                        </div>
+                        {% csrf_token %}
+                    </form>
+                </div>
+            </div>
+            <div id="content-items">
+                {% include 'recipes/content.html' %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

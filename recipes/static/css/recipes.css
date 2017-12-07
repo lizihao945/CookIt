@@ -1,0 +1,37 @@
+body {
+    padding-top: 20px;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.card-login {
+    text-align: right;
+    max-width: 330px;
+    margin: 0 auto;
+}
+
+.card-login .form-control {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.card-register {
+    max-width: 330px;
+    margin: 0 auto;
+}
+
+.card-register label {
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+
+.container {
+	max-width: 800px;
+}
+
+.headshot {
+	height: 36px;
+	width: 36px;
+}

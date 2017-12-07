@@ -1,0 +1,10 @@
+{% load staticfiles %}
+{% if bloguser.picture %}
+	<img class="headshot" src="{% url 'photo' bloguser.pk %}" alt='user_img'>
+{% else %}
+	<img class="headshot" src="{% static 'images/dummyHead.png' %}" alt='user_img'>
+{% endif %}
+<div class="col-xs-8 col-md-10">
+	<p>{{ bloguser.user.username }}</p>
+</div>
+</a>

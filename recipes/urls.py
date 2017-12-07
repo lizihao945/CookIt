@@ -5,7 +5,9 @@ import recipes.views
 
 urlpatterns = [
 	url(r'^$', recipes.views.home, name='home'),
-	url(r'^login', recipes.views.user_login, name='login'),
-	url(r'^logout', recipes.views.user_logout, name='logout'),
+	url(r'^login', recipes.views.login, name='login'),
+	url(r'^logout', recipes.views.logout, name='logout'),
 	url(r'^register', recipes.views.register, name='register'),
+	url(r'^stream', recipes.views.stream, name='stream'),
+	url(r'^addContent', recipes.views.addContent, name='addContent'),
 ]

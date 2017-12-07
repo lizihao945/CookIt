@@ -4,45 +4,55 @@ from __future__ import unicode_literals
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 
 # Auth-related
+from django.contrib import auth
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.contrib.auth.tokens import default_token_generator
+
+# DB-related
+from django.db import IntegrityError
+from django.db import transaction
 
 # Defined models & forms
 from recipes.models import *
 from recipes.forms import *
 
+@transaction.atomic
 def register(request):
-	# Registration form
-  if request.method == 'GET':
-  	context = {'form': RegistrationForm()}
-  	return render(request, 'recipes/register.html', context)
+  if request.method == 'POST':
+    context = {}
+    errors = []
+    context['errors'] = errors
+    form = RegistrationForm(request.POST)
+    if form.is_valid():
+      try:
+        user = User.objects.create_user(
+          username = form.cleaned_data['username'],
+          email = form.cleaned_data['email'],
+          password = form.cleaned_data['password'])
+        user.first_name = form.cleaned_data['firstName']
+        user.last_name = form.cleaned_data['lastName']
+        user.save()
 
-	# Registration request
-  context = {}
-  errors = []
-  context['errors'] = errors
-  form = RegistrationForm(request.POST)
-  if not form.is_valid():
-    errors.append(form.errors)
-    return render(request, 'recipes/register.html', {'errors': form.errors, 'form': form})
-  
-  try:
-    user = User.objects.create_user(
-      username = form.cleaned_data['username'],
-      email = form.cleaned_data['email'],
-      password = form.cleaned_data['password'])
-    user.first_name = form.cleaned_data['first_name']
-    user.last_name = form.cleaned_data['last_name']
-    user.save()
+        auth.login(request, user)
 
-    return render(request, 'recipes/login.html', context)
-  except IntegrityError as e:
-    errors.append(e)
-    context['form'] = form
+        bloguser = Bloguser(user=user)
+        bloguser.save()
+
+        return redirect('stream')
+      except IntegrityError as e:
+        errors.append(e)
+        context['form'] = form
+        return render(request, 'recipes/register.html', context)
+    else:
+      errors.append(form.errors)
+      return render(request, 'recipes/register.html', {'errors': form.errors, 'form': form})
+  else:
+    context = {'form': RegistrationForm()}
     return render(request, 'recipes/register.html', context)
 
-def user_login(request):
+def login(request):
   context = {}
   errors = []
   context['errors'] = errors
@@ -51,32 +61,65 @@ def user_login(request):
   else:
     username = request.POST['username']
     password = request.POST['password']
-
     user = authenticate(username=username, password=password)
     if user is not None:
-      login(request, user)
-      request.session.set_expiry(0)
-      return redirect('home')
+      auth.login(request, user)
+      return redirect('stream')
     else:
       errors.append('authentication failed')
       return render(request, 'recipes/login.html', context)
 
-def recipe_display(request):
-  context = {}
-  if request.user.is_authenticated():
-    customer = request.user.customer
-    context['customer'] = customer
-    # for recipe in customer.favorites.all():
-      # context['recipe_fav_' + str(recipe.pk)] = True
-  context['recipes'] = Recipe.objects.all().order_by('-created_at')
-  return render(request, 'recipes/recipe/recipe_display.html', context)
+def logout(request):
+  auth.logout(request)
+  return redirect('/')
 
-@login_required
-def user_logout(request):
-  logout(request)
-  return redirect('home')
-
-@login_required
 def home(request):
   context = {}
-  return redirect('recipe_display')
+  context['stream'] = 'stream'
+  context['contents'] = list(Content.objects.order_by('-created'))
+  return render(request, 'recipes/stream.html', context)
+
+@login_required
+def stream(request):
+  context = {}
+  bloguser = Bloguser.objects.get(user=request.user)
+  context['bloguser'] = bloguser
+  context['stream'] = 'stream'
+  context['contents'] = list(Content.objects.order_by('-created'))
+  return render(request, 'recipes/stream.html', context)
+
+@login_required
+def addContent(request):
+  if request.method == 'POST':
+    context = {}
+    errors = []
+    context['errors'] = errors
+    form = ContentForm(request.POST)
+    if form.is_valid():
+      try:
+        content = Content(user=request.user, text=request.POST['text'])
+        content.save()
+      except Exception as e:
+        errors.append(e)
+        context['form'] = form
+        return render(request, 'recipes/stream.html', context)
+      context['user'] = request.user
+      context['contents'] = Content.objects.all()
+      return redirect('stream')
+    else:
+      errors.append(form.errors)
+      return render(request, 'recipes/stream.html', context)
+  else:
+    return redirect('stream')
+
+@login_required
+def deleteContent(request, contentId):
+  context = {}
+  try:
+    content_to_delete = Content.objects.get(id=contentId)
+    content_to_delete.delete()
+  except ObjectDoesNotExist as e:
+    pass
+
+  context['contents'] = Content.objects.all()
+  return render(request, 'recipes/stream.html', context)

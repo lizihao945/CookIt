@@ -2,7 +2,10 @@
 
 {% block title %}Register{% endblock %}
 
+{% block navbar %}{% include 'recipes/navbar.html' with active='register' %}{% endblock %}
+
 {% block content %}
+    <h1 style="text-align: center;">CookIt</h1>
     <div class="card card-register">
         <div class="card-block">
             {% if errors %} {{ errors }} {% endif %}
@@ -13,18 +16,18 @@
                 {{ form.username }}
                 <div class="row">
                     <div class="col-xs-6 col-md-6">
-                        {{ form.first_name.label_tag }}
-                        {{ form.first_name }}
+                        {{ form.firstName.label_tag }}
+                        {{ form.firstName }}
                     </div>
                     <div class="col-xs-6 col-md-6">
-                        {{ form.last_name.label_tag }}
-                        {{ form.last_name }}
+                        {{ form.lastName.label_tag }}
+                        {{ form.lastName }}
                     </div>
                 </div>
                 {{ form.password.label_tag }}
                 {{ form.password }}
-                {{ form.password_confirm.label_tag }}
-                {{ form.password_confirm }}
+                {{ form.passwordConfirm.label_tag }}
+                {{ form.passwordConfirm }}
                 <div class="text-right">
                     <br>
                     <button id="Register" class="btn btn-primary" tpye="submit" value="Submit">Register</button>
