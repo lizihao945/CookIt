@@ -82,6 +82,9 @@ def home(request):
     context['bloguser'] = bloguser
   context['page'] = 'home'
   context['contents'] = list(Content.objects.order_by('-created'))
+  for content in context['contents']:
+    content.favCount = Favorite.objects.for_content(content).count()
+    content.hasFav = Favorite.objects.get_favorite(request.user, content)
   context['badges'] = ['Editor', 'Scholar']
   return render(request, 'recipes/stream.html', context)
 
@@ -136,18 +139,16 @@ def notifications(request, contentId):
 
 @login_required
 def fav(request):
-  contentId = request.POST['recipe_id']
-  recipe = get_object_or_404(Recipe, pk=contentId)
+  contentId = request.POST['content_id']
+  content = Content.objects.get(id=contentId)
 
   context = {}
 
-  fav = Favorite.objects.get_favorite(request.user, recipe)
+  fav = Favorite.objects.get_favorite(request.user, content)
   if fav:
     fav.delete()
   else:
-    Favorite.objects.create(request.user, recipe)
+    Favorite.objects.create(request.user, content)
 
-  context['fav_count'] = Favorite.objects.for_recipe(recipe).count()
-  return HttpResponse(json.dumps(context), content_type='application/json')
-
-
+  context['fav_count'] = Favorite.objects.for_content(content).count()
+  return redirect('home')

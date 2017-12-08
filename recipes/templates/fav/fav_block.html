@@ -1,8 +1,15 @@
-<div class="fav">
-
-	<a id="content_fav_{{ content_id }}" class="favorite" style="color: burlywood" href="{% url 'fav' %}">
-	</a>
-	<span>Save to Favorites</span>
-	Saved <span class="fav_count">{{ fav_count }}</span> times.
-	<a href="#"><i class="fa fa-heart" aria-hidden="true"></i></span> </a>
+<div class="fav" style="background-color:lightcyan;padding: 1rem">
+	<form action="{% url 'fav' %}" method="POST">
+		{% csrf_token %}
+		<input type="hidden" name="content_id" value="{{ content.pk }}">
+		<button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+		{% if content.hasFav %}
+			<i class="fa fa-heart" aria-hidden="true"></i>Undo Favorite
+		{% else %}
+			<i class="fa fa-heart" aria-hidden="true"></i>Save to Favorites
+		{% endif %}
+		</button>
+		<br>
+		Saved {{ content.favCount }} times.
+	</form>
 </div>

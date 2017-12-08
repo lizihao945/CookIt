@@ -102,22 +102,3 @@ class BloguserForm(forms.ModelForm):
 
 class ContentForm(forms.Form):
 	text = forms.CharField(max_length=42)
-
-class SettingPasswordForm(forms.Form):
-	password = forms.CharField(label='Password', required=True,
-		widget=forms.PasswordInput(attrs=
-			{'class': 'form-control', 'placeholder': 'Password'}
-		))
-	passwordConfirm = forms.CharField(label='Confirm Password', required=True,
-		widget=forms.PasswordInput(attrs=
-			{'class': 'form-control', 'placeholder': 'Confirm Password'}
-		))
-
-	def clean(self):
-		cleaned_data = super(SettingPasswordForm, self).clean()
-		password1 = cleaned_data.get('password')
-		password2 = cleaned_data.get('passwordConfirm')
-		if password1 and password2 and password1 != password2:
-			raise forms.ValidationError("Passwords did not match.")
-
-		return cleaned_data
