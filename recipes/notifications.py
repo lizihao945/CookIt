@@ -14,5 +14,5 @@ def getNotification(user):
 
 
 
-def clearNotifications(user):
+def clearAllNotifications(user):
     Notification.objects.filter(user=user).delete()

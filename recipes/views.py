@@ -301,7 +301,7 @@ def addTag(request):
 
 @login_required
 def clearNotifications(request):
-  clearNotifications(request.user)
+  clearAllNotifications(request.user)
   return redirect('home')
 
 def badges(request):
