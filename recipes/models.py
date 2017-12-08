@@ -14,7 +14,7 @@ class Bloguser(models.Model):
 
 class Content(models.Model):
 	user = models.ForeignKey(User, blank=False, null=False)
-	text = models.CharField(max_length=1000)
+	text = models.CharField(max_length=10000)
 	created = models.DateTimeField(auto_now_add=True)
 
 	def __str__(self):

@@ -11,7 +11,7 @@
     <div class="card" style="width: 30rem;">
         <div class="card-body">
             <form method="post" action="{% url 'addContent' %}">
-                <textarea maxlength="1000" type="text" name="text" class="form-control" placeholder="Share your recipe!"></textarea>
+                <textarea maxlength="10000" type="text" name="text" class="form-control" placeholder="Share your recipe!"></textarea>
                 <div class="text-right">
                     <br>
                     {% if user.is_anonymous %}

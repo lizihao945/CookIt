@@ -10,7 +10,8 @@ def getNotification(user):
     if user.is_anonymous:
         return []
     else:
-        Notification.objects.filter(user=user).order_by('-created')
+        return Notification.objects.filter(user=user).order_by('-created')
+
 
 
 def clearNotifications(user):

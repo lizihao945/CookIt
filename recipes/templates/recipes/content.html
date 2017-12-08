@@ -2,7 +2,7 @@
 
 <div class="card mt-3" id="content_{{ content.pk }}" style="width: 30rem;">
   <div class="card-body">
-    <p class="card-text"> {{ content.text }} </p>
+    <p class="card-text"> {{ content.text | linebreaks }} </p>
 
     <div class="container">
       <div class="row">
