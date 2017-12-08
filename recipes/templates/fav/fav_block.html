@@ -1,4 +1,4 @@
-<div class="fav" style="background-color:lightcyan;padding: 1rem">
+<div class="fav" style="background-color:lightcyan; padding: 1rem">
 	<form action="{% url 'fav' %}" method="POST">
 		{% csrf_token %}
 		<input type="hidden" name="content_id" value="{{ content.pk }}">
@@ -6,7 +6,7 @@
 		{% if content.hasFav %}
 			<i class="fa fa-heart" aria-hidden="true"></i>Undo Favorite
 		{% else %}
-			<i class="fa fa-heart" aria-hidden="true"></i>Save to Favorites
+			<i class="fa fa-heart" aria-hidden="true"></i>Favorite!
 		{% endif %}
 		</button>
 		<br>

@@ -13,9 +13,11 @@
         <li class="nav-item {% if active == 'myRecipes' %} active {% endif %}">
             <a class="nav-link" href="{% url 'myRecipes' %}">My Recipes</a>
         </li>
+        {% if user.is_anonymous %}
         <li class="nav-item {% if active == 'register' %} active {% endif %}">
             <a class="nav-link" href="{% url 'register' %}">Register</a>
         </li>
+        {% endif %}
         {% if not user.is_anonymous %}
         <li class="nav-item">
             <a class="nav-link" href="{% url 'logout' %}">Logout</a>

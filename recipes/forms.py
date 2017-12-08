@@ -101,4 +101,4 @@ class BloguserForm(forms.ModelForm):
 		}
 
 class ContentForm(forms.Form):
-	text = forms.CharField(max_length=42)
+	text = forms.CharField(max_length=1000)

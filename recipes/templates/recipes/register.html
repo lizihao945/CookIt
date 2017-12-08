@@ -5,9 +5,9 @@
 {% block navbar %}{% include 'recipes/navbar.html' with active='register' %}{% endblock %}
 
 {% block content %}
-    <h1 style="text-align: center;">CookIt</h1>
-    <div class="card card-register">
-        <div class="card-block">
+    <h1 style="text-align: center;">Join CookIt</h1>
+    <div class="card" style="width: 35rem;">
+        <div class="card-body">
             {% if errors %} {{ errors }} {% endif %}
             <form method="post" action="">
                 {{ form.email.label_tag }}

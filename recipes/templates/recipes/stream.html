@@ -8,11 +8,11 @@
 {% block content %}
 {% if errors %} {{ errors }} {% endif %}
 <div class="row">
-    <div class="card" style="width: 20rem;">
+    <div class="card" style="width: 30rem;">
         <div class="card-body">
             {% include 'recipes/picture_and_name.html' %}
             <form method="post" action="{% url 'addContent' %}">
-                <textarea maxlength="42" type="text" name="text" class="form-control" placeholder="What's in your mind?"></textarea>
+                <textarea maxlength="1000" type="text" name="text" class="form-control" placeholder="Share your recipe!"></textarea>
                 <div class="text-right">
                     <br>
                     {% if user.is_anonymous %}
@@ -26,8 +26,10 @@
         </div>
     </div>
 
+    <div class="card-deck mt-lg-3">
     <div id="content-items">
         {% include 'recipes/content.html' %}
+    </div>
     </div>
 </div>
 {% endblock %}
