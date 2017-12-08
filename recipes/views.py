@@ -18,6 +18,8 @@ from django.db import transaction
 from recipes.models import *
 from recipes.forms import *
 
+from recipes.badges import *
+
 @transaction.atomic
 def register(request):
   if request.method == 'POST':
@@ -75,8 +77,9 @@ def logout(request):
 
 def home(request):
   context = {}
-  bloguser = Bloguser.objects.get(user=request.user)
-  context['bloguser'] = bloguser
+  if not request.user.is_anonymous:
+    bloguser = Bloguser.objects.get(user=request.user)
+    context['bloguser'] = bloguser
   context['page'] = 'home'
   context['contents'] = list(Content.objects.order_by('-created'))
   context['badges'] = ['Editor', 'Scholar']
@@ -126,3 +129,7 @@ def deleteContent(request, contentId):
 
   context['contents'] = Content.objects.all()
   return redirect('home')
+
+@login_required
+def notifications(request, contentId):
+  return ''

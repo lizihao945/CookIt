@@ -1,20 +1,36 @@
-<nav class="navbar navbar-light bg-faded">
+<nav class="navbar fixed-top navbar-light" style="background-color: #e3f2fd;">
     <ul class="nav">
-        <li class="nav-item">
-            <a class="nav-link {% if active == 'home' %} active {% endif %}" href="{% url 'home' %}">Home</a>
+        <li class="nav-item {% if active == 'home' %} active {% endif %}">
+            <a class="nav-link" href="{% url 'home' %}">Home</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link {% if active == 'myRecipes' %} active {% endif %}" href="{% url 'myRecipes' %}">My Recipes</a>
+
+        <li class="nav-item {% if active == 'home' %} active {% endif %}">
+            <a role="button" class="btn btn-primary">
+              Notifications <span class="badge badge-light">4</span>
+            </a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link {% if active == 'register' %} active {% endif %}" href="{% url 'register' %}">Register</a>
+        
+        <li class="nav-item {% if active == 'myRecipes' %} active {% endif %}">
+            <a class="nav-link" href="{% url 'myRecipes' %}">My Recipes</a>
         </li>
+        <li class="nav-item {% if active == 'register' %} active {% endif %}">
+            <a class="nav-link" href="{% url 'register' %}">Register</a>
+        </li>
+        {% if not user.is_anonymous %}
         <li class="nav-item">
-            {% if not user.is_anonymous %}
             <a class="nav-link" href="{% url 'logout' %}">Logout</a>
-            {% else %}
-            <a class="nav-link {% if active == 'login' %} active {% endif %}" href="{% url 'login' %}">Login</a>
-            {% endif %}
         </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+        </li>
+        {% else %}
+        <li class="nav-item {% if active == 'notifications' %} active {% endif %}">
+            <a class="nav-link" href="{% url 'notifications' %}">Login</a>
+        </li>
+        {% endif %}
     </ul>
+    <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
 </nav>

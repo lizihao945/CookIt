@@ -1,3 +1,4 @@
+{% load tags %}
 {% for content in contents %}
 
 <div class="card" id="content_{{ content.pk }}" style="width: 20rem;">
@@ -10,7 +11,7 @@
     <p class="card-text"> content.text </p>
     <p class="card-text"><small class="text-muted"> {{ content.created }} </small></p>
     <!-- <a href="#" class="card-link">Card link</a> -->
-    <a href="#"> <span class="glyphicon glyphicon-heart" aria-hidden="true"></span> </a>
+    {% fav_tag content %}
   </div>
 </div>
 

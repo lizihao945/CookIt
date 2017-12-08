@@ -10,4 +10,5 @@ urlpatterns = [
 	url(r'^register', recipes.views.register, name='register'),
 	url(r'^myRecipes', recipes.views.myRecipes, name='myRecipes'),
 	url(r'^addContent', recipes.views.addContent, name='addContent'),
+	url(r'^notifications', recipes.views.notifications, name='notifications'),
 ]
