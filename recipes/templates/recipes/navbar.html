@@ -3,11 +3,20 @@
         <li class="nav-item {% if active == 'home' %} active {% endif %}">
             <a class="nav-link" href="{% url 'home' %}">Home</a>
         </li>
-        <li class="nav-item {% if active == 'home' %} active {% endif %}">
-            <a role="button" class="btn btn-primary">
-              Notifications <span class="badge badge-light">4</span>
-            </a>
-        </li>
+        {% if notifications.count != 0 %}
+            <li class="nav-item dropdown">
+                <button type="button" class="btn btn-info nav-link dropdown-toggle" data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false">Notifications <span class="badge badge-light">{{ notifications.count }}</span>
+                </button>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        {% for notification in notifications %}
+                            <button class="dropdown-item" type="button">{{ notification.text }} -- {{ notification.created }}</button>
+                        {% endfor %}
+                        <a href="{% url 'clearNotifications' %}">Clear</a>
+                    </div>
+            </li>
+        {% else %}
+            <button type="button" class="btn btn-info nav-link">Notifications <span class="badge badge-light">0</span></button>
+        {% endif %}
         <li class="nav-item {% if active == 'dashboard' %} active {% endif %}">
             <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
         </li>
@@ -21,8 +30,8 @@
             <a class="nav-link" href="{% url 'logout' %}">Logout</a>
         </li>
         {% else %}
-        <li class="nav-item {% if active == 'notifications' %} active {% endif %}">
-            <a class="nav-link" href="{% url 'notifications' %}">Login</a>
+        <li class="nav-item {% if active == 'login' %} active {% endif %}">
+            <a class="nav-link" href="{% url 'login' %}">Login</a>
         </li>
         {% endif %}
     </ul>

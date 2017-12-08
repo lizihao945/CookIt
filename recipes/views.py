@@ -98,6 +98,7 @@ def home(request):
       content.hasVote = -1
 
   context['badges'] = ['Editor', 'Scholar']
+  context['notifications'] = Notification.objects.filter(user=request.user).order_by('-created')
   return render(request, 'recipes/stream.html', context)
 
 @login_required
@@ -150,14 +151,20 @@ def notifications(request, contentId):
   return ''
 
 @login_required
+@transaction.atomic
 def fav(request):
   contentId = request.POST['content_id']
   content = Content.objects.get(id=contentId)
   fav = Favorite.objects.getFavorite(request.user, content)
   if fav:
     fav.delete()
+    notification = Notification(user=content.user, text="Your content is unfavorited!")
+    notification.save()
   else:
     Favorite.objects.create(request.user, content)
+    notification = Notification(user=content.user, text="Your content is favorited!")
+    notification.save()
+
   return redirect('home')
 
 @login_required
@@ -173,6 +180,8 @@ def voteUp(request, contentId):
   else:
     Vote.objects.create(request.user, content, True)
 
+  notification = Notification(user=content.user, text="Your content is up-voted!")
+  notification.save()
   return redirect('home')
 
 @login_required
@@ -188,6 +197,8 @@ def voteDown(request, contentId):
   else:
     Vote.objects.create(request.user, content, False)
 
+  notification = Notification(user=content.user, text="Your content is down-voted!")
+  notification.save()
   return redirect('home')
 
 @login_required
@@ -260,3 +271,9 @@ def search(request):
       content.hasVote = -1
   context['badges'] = ['Editor', 'Scholar']
   return render(request, 'recipes/search_results.html', context)
+
+
+@login_required
+def clearNotifications(request):
+  Notification.objects.filter(user=request.user).delete()
+  return redirect('home')
