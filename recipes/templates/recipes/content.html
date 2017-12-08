@@ -2,10 +2,7 @@
 
 <div class="card mt-3" id="content_{{ content.pk }}" style="width: 30rem;">
   <div class="card-body">
-    <!-- <h4 class="card-title">Card title</h4> -->
-    <!-- <h6 class="card-subtitle mb-2 text-muted"> Card </h6> -->
     <p class="card-text"> {{ content.text }} </p>
-    <!-- <a href="#" class="card-link">Card link</a> -->
 
     {% if not user.is_anonymous %}
       {% include 'fav/fav_block.html' %}

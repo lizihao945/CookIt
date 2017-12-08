@@ -32,3 +32,8 @@ class Vote(models.Model):
 	isUp = models.BooleanField()
 
 	objects = VoteManager()
+
+class Notification(models.Model):
+	user = models.ForeignKey(User, blank=False, null=False, related_name='notifications')
+	text = models.CharField(max_length=1000)
+	created = models.DateTimeField(auto_now_add=True)
