@@ -18,4 +18,5 @@ urlpatterns = [
 	url(r'^search', recipes.views.search, name='search'),
 	url(r'^clearNotifications', recipes.views.clearNotifications, name='clearNotifications'),
 	url(r'^badges', recipes.views.badges, name='badges'),
+	url(r'^addTag', recipes.views.addTag, name='addTag'),
 ]

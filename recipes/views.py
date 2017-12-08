@@ -272,6 +272,24 @@ def search(request):
   context['badges'] = ['Editor', 'Scholar']
   return render(request, 'recipes/search_results.html', context)
 
+@login_required
+def addTag(request):
+  contentId = request.POST['contentId']
+  tag = request.POST['tag']
+
+  content = Content.objects.get(id=contentId)
+
+  if Tag.objects.filter(text=tag):
+    tagObj = Tag.objects.get(text=tag)
+    tagObj.contents.add(content)
+    tagObj.save()
+  else:
+    tagObj = Tag(text=tag)
+    tagObj.save()
+    tagObj.contents.add(content)
+    tagObj.save()
+
+  return redirect('home')
 
 @login_required
 def clearNotifications(request):

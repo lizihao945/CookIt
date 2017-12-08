@@ -19,7 +19,7 @@ def getBadges(User):
 
 	# First up vote
 	for vote in Vote.objects.filter(user=User):
-		if not vote.isUp:
+		if vote.isUp:
 			badges.append("Supporter")
 			break;
 
