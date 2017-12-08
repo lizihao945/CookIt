@@ -94,7 +94,7 @@ def home(request):
     else:
       content.hasVote = -1
 
-  context['badges'] = ['Editor', 'Scholar']
+  context['badges'] = getBadges(request.user)
   context['notifications'] = Notification.objects.filter(user=request.user).order_by('-created')
   return render(request, 'recipes/stream.html', context)
 
@@ -217,3 +217,8 @@ def dashboard(request):
 def clearNotifications(request):
   Notification.objects.filter(user=request.user).delete()
   return redirect('home')
+
+def badges(request):
+  context = {}
+  return render(request, 'recipes/badges.html', context)
+

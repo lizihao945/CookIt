@@ -3,7 +3,7 @@
         <li class="nav-item {% if active == 'home' %} active {% endif %}">
             <a class="nav-link" href="{% url 'home' %}">Home</a>
         </li>
-        {% if notifications.count != 0 %}
+        {% if notifications and notifications.count != 0 %}
             <li class="nav-item dropdown">
                 <button type="button" class="btn btn-info nav-link dropdown-toggle" data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false">Notifications <span class="badge badge-light">{{ notifications.count }}</span>
                 </button>
@@ -15,7 +15,7 @@
                     </div>
             </li>
         {% else %}
-            <button type="button" class="btn btn-info nav-link">Notifications <span class="badge badge-light">0</span></button>
+            <button type="button" class="btn btn-outline-info nav-link">Notifications <span class="badge badge-light">0</span></button>
         {% endif %}
         <li class="nav-item {% if active == 'dashboard' %} active {% endif %}">
             <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
@@ -34,6 +34,9 @@
             <a class="nav-link" href="{% url 'login' %}">Login</a>
         </li>
         {% endif %}
+        <li class="nav-item {% if active == 'badges' %} active {% endif %}">
+            <a class="nav-link" href="{% url 'badges' %}">Badges</a>
+        </li>
     </ul>
     <form class="form-inline my-2 my-lg-0">
         <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">

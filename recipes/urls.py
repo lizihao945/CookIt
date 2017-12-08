@@ -16,4 +16,5 @@ urlpatterns = [
 	url(r'^voteDown/(?P<contentId>\d+)', recipes.views.voteDown, name='voteDown'),
 	url(r'^dashboard', recipes.views.dashboard, name='dashboard'),
 	url(r'^clearNotifications', recipes.views.clearNotifications, name='clearNotifications'),
+	url(r'^badges', recipes.views.badges, name='badges'),
 ]

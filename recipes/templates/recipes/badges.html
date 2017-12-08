@@ -1,0 +1,22 @@
+{% extends 'recipes/base.html' %}
+
+{% block title %}Badges{% endblock %}
+
+{% block navbar %}{% include 'recipes/navbar.html' with active='badge' %}{% endblock %}
+
+{% block content %}
+    <h2>All badges</h2>
+    <div class="container">
+      {# {% badges = ['Chef', 'Critic', 'Supporter'] %} #}
+      {% for badge in badges %}
+        <div class="row">
+          <div class="col-md-4">
+            <span class="badge badge-pill badge-success"><i class="fa fa-trophy" aria-hidden="true"></i>{{ badge }}</span>
+          </div>
+          <div class="col-md-8">
+            {{ badge }}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+{% endblock %}
