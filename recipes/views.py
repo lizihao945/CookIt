@@ -212,7 +212,9 @@ def dashboard(request):
     content.favCount = Favorite.objects.countOfContent(content)
     content.hasFav = Favorite.objects.getFavorite(request.user, content)
     content.voteCount = Vote.objects.countOfContent(content)
-  context['badges'] = ['Editor', 'Scholar']
+
+  context['badges'] = getBadges(request.user)
+  context['notifications'] = getNotification(request.user)
 
   context['favCount'] = Favorite.objects.countOfUser(request.user)
   context['voteCount'] = Vote.objects.countOfUser(request.user)
@@ -272,7 +274,10 @@ def search(request):
       content.hasVote = 1
     else:
       content.hasVote = -1
-  context['badges'] = ['Editor', 'Scholar']
+
+  context['badges'] = getBadges(request.user)
+  context['notifications'] = getNotification(request.user)
+
   return render(request, 'recipes/search_results.html', context)
 
 @login_required
@@ -301,5 +306,13 @@ def clearNotifications(request):
 
 def badges(request):
   context = {}
+
+  if not request.user.is_anonymous:
+    bloguser = Bloguser.objects.get(user=request.user)
+    context['bloguser'] = bloguser
+
+  context['badges'] = getBadges(request.user)
+  context['notifications'] = getNotification(request.user)
+
   return render(request, 'recipes/badges.html', context)
 
