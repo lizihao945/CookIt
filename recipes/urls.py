@@ -11,4 +11,5 @@ urlpatterns = [
 	url(r'^myRecipes', recipes.views.myRecipes, name='myRecipes'),
 	url(r'^addContent', recipes.views.addContent, name='addContent'),
 	url(r'^notifications', recipes.views.notifications, name='notifications'),
+	url(r'^fav', recipes.views.fav, name='fav'),
 ]

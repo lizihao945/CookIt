@@ -133,3 +133,21 @@ def deleteContent(request, contentId):
 @login_required
 def notifications(request, contentId):
   return ''
+
+@login_required
+def fav(request):
+  contentId = request.POST['recipe_id']
+  recipe = get_object_or_404(Recipe, pk=contentId)
+
+  context = {}
+
+  fav = Favorite.objects.get_favorite(request.user, recipe)
+  if fav:
+    fav.delete()
+  else:
+    Favorite.objects.create(request.user, recipe)
+
+  context['fav_count'] = Favorite.objects.for_recipe(recipe).count()
+  return HttpResponse(json.dumps(context), content_type='application/json')
+
+
