@@ -20,6 +20,9 @@ from recipes.forms import *
 
 from recipes.badges import *
 
+# for searching
+import re
+
 @transaction.atomic
 def register(request):
   if request.method == 'POST':
@@ -212,6 +215,63 @@ def dashboard(request):
   context['voteCount'] = Vote.objects.countOfUser(request.user)
 
   return render(request, 'recipes/dashboard.html', context)
+
+
+def search(request):
+  original_query = request.POST['searchQuery'].lower()
+  original_tokens = re.findall("\w+", original_query)
+
+  # drop stop words
+  stopwords = set(["a", "an", "and", "are", "as", "at", "be", "by", "for", "from", "has", "he", "in", "is", "it", "its", "of", "on", "that", "the", "to", "was", "were", "will", "with"])
+  original_tokens = filter(lambda w : w not in stopwords, original_tokens)
+
+  # Empty query, return to home
+  if len(original_tokens) is 0:
+    return redirect('home')
+
+  context = {}
+  if not request.user.is_anonymous:
+    bloguser = Bloguser.objects.get(user=request.user)
+    context['bloguser'] = bloguser
+  context['page'] = 'home'
+  unfiltered = list(Content.objects.order_by('-created'))
+  all_matched = []
+  partial_matched = []
+  for content in unfiltered:
+    docTokens = [w.lower() for w in re.findall('\\w+', content.text)]
+    all_match = True
+    partial_match = False
+    for query_token in original_tokens:
+      all_match = all_match and (query_token in docTokens)
+      partial_match = partial_match or (query_token in docTokens)
+    if all_match:
+      all_matched.append(content)
+    if partial_match:
+      partial_matched.append(content)
+
+  if len(all_matched) is not 0:
+    context['contents'] = all_matched
+    context['query'] = ' AND '.join(original_tokens)
+    context['resultCount'] = len(all_matched)
+  else:
+    context['contents'] = partial_matched
+    context['query'] = ' OR '.join(original_tokens)
+    context['resultCount'] = len(partial_matched)
+
+  for content in context['contents']:
+    content.favCount = Favorite.objects.countOfContent(content)
+    content.hasFav = Favorite.objects.getFavorite(request.user, content)
+    content.voteCount = Vote.objects.countOfContent(content)
+    t = Vote.objects.getVote(request.user, content)
+    if t == None:
+      content.hasVote = 0
+    elif t.isUp == True:
+      content.hasVote = 1
+    else:
+      content.hasVote = -1
+  context['badges'] = ['Editor', 'Scholar']
+  return render(request, 'recipes/search_results.html', context)
+
 
 @login_required
 def clearNotifications(request):
