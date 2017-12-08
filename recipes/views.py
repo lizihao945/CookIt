@@ -86,6 +86,14 @@ def home(request):
     content.favCount = Favorite.objects.countOfContent(content)
     content.hasFav = Favorite.objects.getFavorite(request.user, content)
     content.voteCount = Vote.objects.countOfContent(content)
+    t = Vote.objects.getVote(request.user, content)
+    if t == None:
+      content.hasVote = 0
+    elif t.isUp == True:
+      content.hasVote = 1
+    else:
+      content.hasVote = -1
+
   context['badges'] = ['Editor', 'Scholar']
   return render(request, 'recipes/stream.html', context)
 
