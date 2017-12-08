@@ -154,8 +154,11 @@ def voteUp(request, contentId):
   content = Content.objects.get(id=contentId)
   vote = Vote.objects.getVote(request.user, content)
 
-  if vote and not vote.isUp:
-    vote.delete()
+  if vote:
+    if not vote.isUp:
+      vote.delete()
+    else:
+      return redirect('home')
   else:
     Vote.objects.create(request.user, content, True)
 
@@ -166,8 +169,11 @@ def voteDown(request, contentId):
   content = Content.objects.get(id=contentId)
   vote = Vote.objects.getVote(request.user, content)
 
-  if vote and vote.isUp:
-    vote.delete()
+  if vote:
+    if vote.isUp:
+      vote.delete()
+    else:
+      return redirect('home')
   else:
     Vote.objects.create(request.user, content, False)
 
