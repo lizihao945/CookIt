@@ -1,0 +1,26 @@
+{% extends 'recipes/base.html' %}
+{% load staticfiles %}
+
+{% block title %}Stream{% endblock %}
+
+{% block navbar %}{% include 'recipes/navbar.html' with active=page %}{% endblock %}
+
+{% block content %}
+{% if errors %} {{ errors }} {% endif %}
+<div class="row">
+
+    <div class="card bg-light" style="width: 30rem;">
+      <div class="card-body">
+        <h4 class="card-subtitle mb-2 text-muted">Showing results for query:</h4>
+        <h4 class="card-title"> {{ query }} </h4>
+        <p>Total {{ resultCount }} matched results found</p>
+      </div>
+    </div>
+
+    <div class="card-deck mt-lg-3">
+    <div id="content-items">
+        {% include 'recipes/content.html' %}
+    </div>
+    </div>
+</div>
+{% endblock %}
