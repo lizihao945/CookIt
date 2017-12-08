@@ -13,15 +13,30 @@
             </button>
 		{% endif %}
 
-        <a href="{% url 'voteUp' content.pk %}" class="btn btn-outline-success my-2 my-sm-0">
-            <i class="fa fa-thumbs-up" aria-hidden="true"></i> UpVote {{ content.voteCount }}
-        </a>
+        <div class="btn-group" role="group" aria-label="...">
+            {% if content.hasVote is 1 %}
+                <a href="{% url 'voteUp' content.pk %}" class="btn btn-success my-2 my-sm-0">
+                    <i class="fa fa-thumbs-up" aria-hidden="true"></i> Up
+                </a>
+            {% else %}
+                <a href="{% url 'voteUp' content.pk %}" class="btn btn-outline-success my-2 my-sm-0">
+                    <i class="fa fa-thumbs-up" aria-hidden="true"></i> Up
+                </a>
+            {% endif %}
 
-        <!--
-        <a href="{% url 'voteDown' content.pk %}" class="btn btn-outline-success my-2 my-sm-0">
-            <i class="fa fa-thumbs-down" aria-hidden="true"></i> DownVote
-        </a>
-        -->
+            <button class="btn btn-outline-success my-2 my-sm-0" disabled> {{ content.voteCount }} </button>
+
+            {% if content.hasVote is -1 %}
+                <a href="{% url 'voteDown' content.pk %}" class="btn btn-success my-2 my-sm-0">
+                    <i class="fa fa-thumbs-down" aria-hidden="true"></i> Down
+                </a>
+            {% else %}
+                <a href="{% url 'voteDown' content.pk %}" class="btn btn-outline-success my-2 my-sm-0">
+                    <i class="fa fa-thumbs-down" aria-hidden="true"></i> Down
+                </a>
+            {% endif %}
+        </div>
+
 
 		<br>
 	</form>
