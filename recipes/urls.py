@@ -12,4 +12,6 @@ urlpatterns = [
 	url(r'^addContent', recipes.views.addContent, name='addContent'),
 	url(r'^notifications', recipes.views.notifications, name='notifications'),
 	url(r'^fav', recipes.views.fav, name='fav'),
+	url(r'^voteUp/(?P<contentId>\d+)', recipes.views.voteUp, name='voteUp'),
+	url(r'^voteDown/(?P<contentId>\d+)', recipes.views.voteDown, name='voteDown'),
 ]

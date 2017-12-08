@@ -83,8 +83,9 @@ def home(request):
   context['page'] = 'home'
   context['contents'] = list(Content.objects.order_by('-created'))
   for content in context['contents']:
-    content.favCount = Favorite.objects.for_content(content).count()
-    content.hasFav = Favorite.objects.get_favorite(request.user, content)
+    content.favCount = Favorite.objects.countOfContent(content)
+    content.hasFav = Favorite.objects.getFavorite(request.user, content)
+    content.voteCount = Vote.objects.countOfContent(content)
   context['badges'] = ['Editor', 'Scholar']
   return render(request, 'recipes/stream.html', context)
 
@@ -141,14 +142,33 @@ def notifications(request, contentId):
 def fav(request):
   contentId = request.POST['content_id']
   content = Content.objects.get(id=contentId)
-
-  context = {}
-
-  fav = Favorite.objects.get_favorite(request.user, content)
+  fav = Favorite.objects.getFavorite(request.user, content)
   if fav:
     fav.delete()
   else:
     Favorite.objects.create(request.user, content)
+  return redirect('home')
 
-  context['fav_count'] = Favorite.objects.for_content(content).count()
+@login_required
+def voteUp(request, contentId):
+  content = Content.objects.get(id=contentId)
+  vote = Vote.objects.getVote(request.user, content)
+
+  if vote and not vote.isUp:
+    vote.delete()
+  else:
+    Vote.objects.create(request.user, content, True)
+
+  return redirect('home')
+
+@login_required
+def voteDown(request, contentId):
+  content = Content.objects.get(id=contentId)
+  vote = Vote.objects.getVote(request.user, content)
+
+  if vote and vote.isUp:
+    vote.delete()
+  else:
+    Vote.objects.create(request.user, content, False)
+
   return redirect('home')

@@ -12,4 +12,8 @@
 		<br>
 		Saved {{ content.favCount }} times.
 	</form>
+	<a href="{% url 'voteUp' content.pk %}"><i class="fa fa-thumbs-up" aria-hidden="true"></i>
+	</a>
+	{{ content.voteCount }}
+	<a href="{% url 'voteDown' content.pk %}"><i class="fa fa-thumbs-down" aria-hidden="true"></i></a>
 </div>
