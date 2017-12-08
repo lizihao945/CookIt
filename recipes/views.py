@@ -177,6 +177,8 @@ def voteUp(request, contentId):
   else:
     Vote.objects.create(request.user, content, True)
 
+  notification = Notification(user=content.user, text="Your content is up-voted!")
+  notification.save()
   return redirect('home')
 
 @login_required
@@ -192,6 +194,8 @@ def voteDown(request, contentId):
   else:
     Vote.objects.create(request.user, content, False)
 
+  notification = Notification(user=content.user, text="Your content is down-voted!")
+  notification.save()
   return redirect('home')
 
 @login_required
