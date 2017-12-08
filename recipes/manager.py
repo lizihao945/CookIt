@@ -2,8 +2,8 @@ from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
 
 class FavoriteManager(models.Manager):
-  def forUser(self, user):
-    return self.get_queryset().filter(user=user)
+  def countOfUser(self, user):
+    return self.get_queryset().filter(user=user).count()
 
   def countOfContent(self, content):
     return self.get_queryset().filter(content=content).count()
@@ -18,8 +18,8 @@ class FavoriteManager(models.Manager):
     return super(FavoriteManager, self).create(user=user, content=content)
 
 class VoteManager(models.Manager):
-  def forUser(self, user):
-    return self.get_queryset().filter(user=user)
+  def countOfUser(self, user):
+    return self.get_queryset().filter(user=user).count()
 
   def countOfContent(self, content):
     rt = 0

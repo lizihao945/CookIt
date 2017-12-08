@@ -178,3 +178,18 @@ def voteDown(request, contentId):
     Vote.objects.create(request.user, content, False)
 
   return redirect('home')
+
+@login_required
+def dashboard(request):
+  context = {}
+  context['contents'] = list(Content.objects.filter(user=request.user).order_by('-created'))
+  for content in context['contents']:
+    content.favCount = Favorite.objects.countOfContent(content)
+    content.hasFav = Favorite.objects.getFavorite(request.user, content)
+    content.voteCount = Vote.objects.countOfContent(content)
+  context['badges'] = ['Editor', 'Scholar']
+
+  context['favCount'] = Favorite.objects.countOfUser(request.user)
+  context['voteCount'] = Vote.objects.countOfUser(request.user)
+
+  return render(request, 'recipes/dashboard.html', context)
