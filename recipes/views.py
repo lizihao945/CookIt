@@ -228,7 +228,7 @@ def search(request):
 
   # drop stop words
   stopwords = set(["a", "an", "and", "are", "as", "at", "be", "by", "for", "from", "has", "he", "in", "is", "it", "its", "of", "on", "that", "the", "to", "was", "were", "will", "with"])
-  original_tokens = filter(lambda w : w not in stopwords, original_tokens)
+  original_tokens = list(filter(lambda w : w not in stopwords, original_tokens))
 
   # Empty query, return to home
   if len(original_tokens) is 0:
