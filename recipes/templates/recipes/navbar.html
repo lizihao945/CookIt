@@ -1,43 +1,56 @@
 <nav class="navbar fixed-top navbar-light" style="background-color: #e3f2fd;">
     <ul class="nav">
+
         <li class="nav-item {% if active == 'home' %} active {% endif %}">
             <a class="nav-link" href="{% url 'home' %}">Home</a>
         </li>
-        {% if notifications and notifications.count != 0 %}
-            <li class="nav-item dropdown">
-                <button type="button" class="btn btn-info nav-link dropdown-toggle" data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false">Notifications <span class="badge badge-light">{{ notifications.count }}</span>
-                </button>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        {% for notification in notifications %}
-                            <button class="dropdown-item" type="button">{{ notification.text }} -- {{ notification.created }}</button>
-                        {% endfor %}
-                        <a href="{% url 'clearNotifications' %}">Clear</a>
-                    </div>
-            </li>
-        {% else %}
-            <button type="button" class="btn btn-outline-info nav-link">Notifications <span class="badge badge-light">0</span></button>
-        {% endif %}
-        <li class="nav-item {% if active == 'dashboard' %} active {% endif %}">
-            <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
-        </li>
-        {% if user.is_anonymous %}
-        <li class="nav-item {% if active == 'register' %} active {% endif %}">
-            <a class="nav-link" href="{% url 'register' %}">Register</a>
-        </li>
-        {% endif %}
+
+
         {% if not user.is_anonymous %}
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
-        </li>
+
+            {% if notifications and notifications.count != 0 %}
+                <li class="nav-item dropdown">
+                    <button type="button" class="btn btn-info nav-link dropdown-toggle" data-toggle="dropdown"  aria-haspopup="true" aria-expanded="false">Notifications <span class="badge badge-light">{{ notifications.count }}</span>
+                    </button>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            {% for notification in notifications %}
+                                <button class="dropdown-item" type="button">{{ notification.text }} -- {{ notification.created }}</button>
+                            {% endfor %}
+                            <a href="{% url 'clearNotifications' %}">Clear</a>
+                        </div>
+                </li>
+            {% else %}
+
+                <button type="button" class="btn btn-outline-info nav-link">Notifications <span class="badge badge-light">0</span></button>
+
+            {% endif %}
+
+            <li class="nav-item {% if active == 'dashboard' %} active {% endif %}">
+                <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
+            </li>
+
+            <li class="nav-item {% if active == 'badges' %} active {% endif %}">
+                <a class="nav-link" href="{% url 'badges' %}">Badges</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+            </li>
+
         {% else %}
-        <li class="nav-item {% if active == 'login' %} active {% endif %}">
-            <a class="nav-link" href="{% url 'login' %}">Login</a>
-        </li>
+
+            <li class="nav-item {% if active == 'register' %} active {% endif %}">
+                <a class="nav-link" href="{% url 'register' %}">Register</a>
+            </li>
+
+            <li class="nav-item {% if active == 'login' %} active {% endif %}">
+                <a class="nav-link" href="{% url 'login' %}">Login</a>
+            </li>
+
         {% endif %}
-        <li class="nav-item {% if active == 'badges' %} active {% endif %}">
-            <a class="nav-link" href="{% url 'badges' %}">Badges</a>
-        </li>
+
     </ul>
+
     <form action="{% url 'search' %}" class="form-inline my-2 my-lg-0" method="post">
         {% csrf_token %}
         <input name="searchQuery" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">

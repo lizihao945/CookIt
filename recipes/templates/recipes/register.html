@@ -5,35 +5,60 @@
 {% block navbar %}{% include 'recipes/navbar.html' with active='register' %}{% endblock %}
 
 {% block content %}
-    <h1 style="text-align: center;">Join CookIt</h1>
-    <div class="card" style="width: 35rem;">
-        <div class="card-body">
-            {% if errors %} {{ errors }} {% endif %}
-            <form method="post" action="">
-                {{ form.email.label_tag }}
-                {{ form.email }}
-                {{ form.username.label_tag }}
-                {{ form.username }}
-                <div class="row">
-                    <div class="col-xs-6 col-md-6">
-                        {{ form.firstName.label_tag }}
-                        {{ form.firstName }}
+<div class="container">
+    <div class="row justify-content-md-center">
+        <div class="card" style="width: 35rem;">
+            <h4 class="card-header">Join CookIt</h4>
+            <div class="card-body">
+                {% if errors %} {{ errors }} {% endif %}
+                <form method="post" action="">
+                    {{ form.email.label_tag }}
+                    <div class="input-group">
+						<span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+                        {{ form.email }}
                     </div>
-                    <div class="col-xs-6 col-md-6">
-                        {{ form.lastName.label_tag }}
-                        {{ form.lastName }}
+                    {{ form.username.label_tag }}
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                        {{ form.username }}
                     </div>
-                </div>
-                {{ form.password.label_tag }}
-                {{ form.password }}
-                {{ form.passwordConfirm.label_tag }}
-                {{ form.passwordConfirm }}
-                <div class="text-right">
-                    <br>
-                    <button id="Register" class="btn btn-primary" tpye="submit" value="Submit">Register</button>
-                </div>
-                {% csrf_token %}
-            </form>
+                    <div class="row">
+                        <div class="col-xs-6 col-md-6">
+                            {{ form.firstName.label_tag }}
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                                {{ form.firstName }}
+                            </div>
+                        </div>
+                        <div class="col-xs-6 col-md-6">
+                            {{ form.lastName.label_tag }}
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                                {{ form.lastName }}
+                            </div>
+                        </div>
+                    </div>
+
+                    {{ form.password.label_tag }}
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-lock fa" aria-hidden="true"></i></span>
+                        {{ form.password }}
+                    </div>
+
+                    {{ form.passwordConfirm.label_tag }}
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-lock fa" aria-hidden="true"></i></span>
+                        {{ form.passwordConfirm }}
+                    </div>
+
+                    <div class="text-right">
+                        <br>
+                        <button id="Register" class="btn btn-primary" tpye="submit" value="Submit">Register</button>
+                    </div>
+                    {% csrf_token %}
+                </form>
+            </div>
         </div>
     </div>
+</div>
 {% endblock %}

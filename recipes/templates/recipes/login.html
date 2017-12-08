@@ -5,22 +5,32 @@
 {% block navbar %}{% include 'recipes/navbar.html' with active='login' %}{% endblock %}
 
 {% block content %}
-    <h1 style="text-align: center;">CookIt</h1>
-    <div class="card card-login">
-        <div class="card-block">
-            <p>
-            {% if info %} {{ info }} {% endif %}
-            {% if errors %} {{ errors }} {% endif %}
-            </p>
-            <form method="post" action="{% url 'login' %}">
-                <div class="form-group">
-                    <input class="form-control" name="username" id="Username" placeholder="Enter Your Username" type="text">
-                    <input class="form-control" name="password" id="Password" placeholder="Enter Your Password" type="password">
-                    <p class="text-right"><a href="{% url 'register' %}">Register</a></p>
-                    <button id="login" class="btn btn-lg btn-primary btn-block" tpye="submit" value="Submit">Login</button>
+    <div class="container">
+        <div class="row justify-content-md-center">
+            <div class="card" style="width: 25rem;">
+                <h4 class="card-header">Login CookIt</h4>
+                <div class="card-body">
+                    <p>
+                    {% if info %} {{ info }} {% endif %}
+                    {% if errors %} {{ errors }} {% endif %}
+                    </p>
+                    <form method="post" action="{% url 'login' %}">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                                <input class="form-control" name="username" id="Username" placeholder="Enter Your Username" type="text">
+                            </div>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-lock fa" aria-hidden="true"></i></span>
+                                <input class="form-control" name="password" id="Password" placeholder="Enter Your Password" type="password">
+                            </div>
+                            <p class="text-right"><a href="{% url 'register' %}">Register</a></p>
+                            <button id="login" class="btn btn-lg btn-primary btn-block" tpye="submit" value="Submit">Login</button>
+                        </div>
+                        {% csrf_token %}
+                    </form>
                 </div>
-                {% csrf_token %}
-            </form>
+            </div>
         </div>
     </div>
 {% endblock %}
