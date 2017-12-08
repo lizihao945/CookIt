@@ -8,17 +8,23 @@
 {% block content %}
 {% if errors %} {{ errors }} {% endif %}
 <div class="row">
-    <div class="card" style="width: 30rem;">
+    <div class="card post-recipe" style="width: 30rem;">
         <div class="card-body">
             <form method="post" action="{% url 'addContent' %}">
-                <textarea maxlength="10000" type="text" name="text" class="form-control" placeholder="Share your recipe!"></textarea>
+                <textarea maxlength="10000" type="text" name="text" class="form-control post-recipe" placeholder="Share your recipe!"></textarea>
                 <div class="text-right">
                     <br>
+
                     {% if user.is_anonymous %}
+
                         <a href="/recipes/register" id="Post" class="btn btn-primary" role="button">Sign Up and Post</a>
+
                     {% else %}
-                        <button id="Post" class="btn btn-primary" type="submit" value="Submit">Post</button>
+
+                        <button id="Post" class="btn btn-primary post-recipe" type="submit" value="Submit">Post</button>
+
                     {% endif %}
+
                 </div>
                 {% csrf_token %}
             </form>

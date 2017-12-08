@@ -33,6 +33,30 @@
     <script src="{% static "js/jquery-3.1.1.min.js" %}"></script>
     <script src="{% static "js/popper.min.js" %}"></script>
     <script src="{% static "js/bootstrap.min.js" %}"></script>
+
+    {% if not user.is_anonymous %}
+
+        <script>
+        $('textarea.post-recipe')
+            .focus(function () {
+                $(this).animate({ height: "6em" }, 200);
+                $('div.post-recipe').animate({ height: "12em" }, 200);
+                $('button.post-recipe').fadeIn(100);
+            })
+            .focusout(function () {
+                $(this).animate({ height: "3em" }, 200);
+                $('div.post-recipe').animate({ height: "6em" }, 200);
+                $('button.post-recipe').fadeOut(100);
+            });
+        $('document').ready(function () {
+            $('textarea.post-recipe').animate({ height: "3em" }, 0);
+            $('div.post-recipe').animate({ height: "6em" }, 0);
+            $('button.post-recipe').hide();
+        });
+        </script>
+
+    {% endif %}
+
 </body>
 
 </html>
