@@ -7,6 +7,11 @@ from django.contrib.auth.models import User
 
 def getBadges(User):
 	badges = []
+
+	# return empty badge set for anonymous user
+	if User.is_anonymous:
+		return badges
+
 	# First Recipe
 	if Content.objects.filter(user=User).count() > 0:
 		badges.append("Chef")

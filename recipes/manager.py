@@ -1,25 +1,35 @@
 from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
 
+
 class FavoriteManager(models.Manager):
   def countOfUser(self, user):
-    return self.get_queryset().filter(user=user).count()
+    if user.is_anonymous:
+      return 0
+    else:
+      return self.get_queryset().filter(user=user).count()
 
   def countOfContent(self, content):
     return self.get_queryset().filter(content=content).count()
 
   def getFavorite(self, user, content):
-    try:
-      return self.get_queryset().get(user=user, content=content)
-    except ObjectDoesNotExist:
+    if user.is_anonymous:
       return None
+    else:
+      try:
+        return self.get_queryset().get(user=user, content=content)
+      except ObjectDoesNotExist:
+        return None
 
   def create(self, user, content):
     return super(FavoriteManager, self).create(user=user, content=content)
 
 class VoteManager(models.Manager):
   def countOfUser(self, user):
-    return self.get_queryset().filter(user=user).count()
+    if user.is_anonymous:
+      return 0
+    else:
+      return self.get_queryset().filter(user=user).count()
 
   def countOfContent(self, content):
     rt = 0
@@ -31,10 +41,13 @@ class VoteManager(models.Manager):
     return rt
 
   def getVote(self, user, content):
-    try:
-      return self.get_queryset().get(user=user, content=content)
-    except ObjectDoesNotExist:
+    if user.is_anonymous:
       return None
+    else:
+      try:
+        return self.get_queryset().get(user=user, content=content)
+      except ObjectDoesNotExist:
+        return None
 
   def create(self, user, content, isUp):
     return super(VoteManager, self).create(user=user, content=content, isUp=isUp)

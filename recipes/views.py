@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 
 # Auth-related
@@ -19,6 +20,7 @@ from recipes.models import *
 from recipes.forms import *
 
 from recipes.badges import *
+from recipes.notifications import *
 
 # for searching
 import re
@@ -98,7 +100,8 @@ def home(request):
       content.hasVote = -1
 
   context['badges'] = getBadges(request.user)
-  context['notifications'] = Notification.objects.filter(user=request.user).order_by('-created')
+  context['notifications'] = getNotification(request.user)
+
   return render(request, 'recipes/stream.html', context)
 
 @login_required
@@ -293,7 +296,7 @@ def addTag(request):
 
 @login_required
 def clearNotifications(request):
-  Notification.objects.filter(user=request.user).delete()
+  clearNotifications(request.user)
   return redirect('home')
 
 def badges(request):
