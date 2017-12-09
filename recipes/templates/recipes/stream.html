@@ -11,13 +11,24 @@
     <div class="card post-recipe" style="width: 30rem;">
         <div class="card-body">
             <form method="post" action="{% url 'addContent' %}">
-                <textarea maxlength="10000" type="text" name="text" class="form-control post-recipe" placeholder="Share your recipe!"></textarea>
+                <div class="instructions-hide"><h5>Title:</h5></div>
+                <textarea maxlength="10000" type="text" name="recipe-name" class="form-control post-recipe post-recipe-hide" style="height: 2em" placeholder="Name your recipe"></textarea>
+                <div class="instructions-hide"><h5>Ingredients:</h5></div>
+                <textarea maxlength="10000" type="text" name="recipe-ingredients" class="form-control post-recipe post-recipe-hide" placeholder="What's your ingredients"></textarea>
+                <div class="instructions-hide"><h5>Steps:</h5></div>
+
+                {% if user.is_anonymous %}
+                    <textarea maxlength="10000" type="text" name="recipe-steps" class="form-control post-recipe post-recipe-trigger" placeholder="Sign up to share your recipe!"></textarea>
+                {% else %}
+                    <textarea maxlength="10000" type="text" name="recipe-steps" class="form-control post-recipe post-recipe-trigger" placeholder="Share your recipe!"></textarea>
+                {% endif %}
+
                 <div class="text-right">
                     <br>
 
                     {% if user.is_anonymous %}
 
-                        <a href="/recipes/register" id="Post" class="btn btn-primary" role="button">Sign Up and Post</a>
+                        <a href="/recipes/register" id="Post" class="btn btn-primary post-recipe" role="button">Sign Up and Post</a>
 
                     {% else %}
 

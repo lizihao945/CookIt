@@ -122,7 +122,11 @@ def addContent(request):
     form = ContentForm(request.POST)
     if form.is_valid():
       try:
-        content = Content(user=request.user, text=request.POST['text'])
+        name_text = request.POST['recipe-name']
+        ingredients_text = request.POST['recipe-ingredients']
+        steps_text = request.POST['recipe-steps']
+        final_text = name_text + ingredients_text + steps_text
+        content = Content(user=request.user, text=final_text)
         content.save()
       except Exception as e:
         errors.append(e)

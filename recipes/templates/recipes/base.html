@@ -37,21 +37,56 @@
     {% if not user.is_anonymous %}
 
         <script>
-        $('textarea.post-recipe')
+        $has_expanded = false;
+        $('textarea.post-recipe-trigger')
             .focus(function () {
-                $(this).animate({ height: "6em" }, 200);
-                $('div.post-recipe').animate({ height: "12em" }, 200);
-                $('button.post-recipe').fadeIn(100);
-            })
-            .focusout(function () {
-                $(this).animate({ height: "3em" }, 200);
-                $('div.post-recipe').animate({ height: "6em" }, 200);
-                $('button.post-recipe').fadeOut(100);
+                if (!$has_expanded) {
+                    $(this).animate({ height: "6em" }, 200);
+                    $(this).attr("placeholder", "What's the steps?");
+                    $('div.instructions-hide').fadeIn(100);
+                    $('textarea.post-recipe-hide').fadeIn(100);
+                    $('button.post-recipe').fadeIn(100);
+                    $('div.post-recipe').animate({ height: "25em" }, 200);
+
+                    $has_expanded = true;
+                }
             });
         $('document').ready(function () {
             $('textarea.post-recipe').animate({ height: "3em" }, 0);
-            $('div.post-recipe').animate({ height: "6em" }, 0);
+            $('div.instructions-hide').hide();
+            $('textarea.post-recipe-hide').hide();
             $('button.post-recipe').hide();
+            $('div.post-recipe').animate({ height: "6em" }, 0);
+
+            $has_expanded = false
+        });
+        </script>
+
+    {% else %}
+
+        <script>
+        $has_expanded = false;
+        $('textarea.post-recipe-trigger')
+            .focus(function () {
+                if (!$has_expanded) {
+                    $(this).animate({ height: "6em" }, 200);
+                    $(this).attr("placeholder", "What's the steps?");
+                    $('div.instructions-hide').fadeIn(100);
+                    $('textarea.post-recipe-hide').fadeIn(100);
+                    $('a.post-recipe').fadeIn(100);
+                    $('div.post-recipe').animate({ height: "25em" }, 200);
+
+                    $has_expanded = true;
+                }
+            });
+        $('document').ready(function () {
+            $('textarea.post-recipe').animate({ height: "3em" }, 0);
+            $('div.instructions-hide').hide();
+            $('textarea.post-recipe-hide').hide();
+            $('a.post-recipe').hide();
+            $('div.post-recipe').animate({ height: "6em" }, 0);
+
+            $has_expanded = false
         });
         </script>
 
