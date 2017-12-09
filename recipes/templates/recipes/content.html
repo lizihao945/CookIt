@@ -47,11 +47,11 @@
       {% include 'fav/fav_block.html' %}
     {% endif %}
 
-    {% if recommendations %}
+    {% if content.recommendations %}
       <br>
       <h4>You may also like</h4>
-      {% for content in recommendations %}
-        <button type="button" class="btn btn-sm btn-info" data-toggle="popover" title="{{ content.title }}" data-content="{{ content.text }}">Click to toggle popover</button>
+      {% for content in content.recommendations %}
+        <button type="button" class="btn btn-sm btn-info" data-toggle="popover" title="{{ content.title }}" data-content="{{ content.text }}">{{ content.title }}</button>
       {% endfor %}
     {% endif %}
   </div>

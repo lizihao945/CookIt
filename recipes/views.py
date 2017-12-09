@@ -99,6 +99,23 @@ def home(request):
     else:
       content.hasVote = -1
 
+  stopwords = set(["a", "an", "and", "are", "as", "at", "be", "by", "for", "from", "has", "he", "in", "is", "it", "its", "of", "on", "that", "the", "to", "was", "were", "will", "with"])
+  def get_bag(doc_str):
+    bag = [w.lower() for w in re.findall('\\w+', doc_str)]
+    bag = list(filter(lambda x: x not in stopwords, bag))
+    return set(bag)
+
+  doc_bags = list(map(lambda x: get_bag(x.text), context['contents']))
+  for idx in range(len(doc_bags)):
+    context['contents'][idx].recommendations = []
+    this_bag = doc_bags[idx]
+    for idx2 in range(len(doc_bags)):
+      if (idx2 != idx):
+        target_bag = doc_bags[idx2]
+        relation = float(len(list(filter(lambda x: x in target_bag, list(this_bag))))) / float(len(this_bag))
+        if (relation > 0.2):
+          context['contents'][idx].recommendations.append(context['contents'][idx2])
+
   context['badges'] = getBadges(request.user)
   context['notifications'] = getNotification(request.user)
 
