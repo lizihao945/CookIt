@@ -5,14 +5,14 @@
   <div class="card-body">
     <h4 class="card-title">{{ content.title }}</h4>
     <p class="card-text"> {{ content.text|safe|linebreaks }} </p>
-
+    <p><h5>Cook time:</h5> {{ content.minute }} minutes </p>
     {% if not user.is_anonymous %}
       <div class="container">
         <div class="row">
           <div class="col-md-6">
             <div>
               {% for tag in content.tag_set.all %}
-                <a href="recipes/search/?searchQuery={{ tag.text }}"><span class="badge badge-pill badge-primary">
+                <a href="search?searchQuery={{ tag.text }}"><span class="badge badge-pill badge-primary">
                   <i class="fa fa-tags" aria-hidden="true"></i>
                   {{ tag.text }}
                 </span></a>
