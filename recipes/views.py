@@ -98,6 +98,7 @@ def home(request):
       content.hasVote = 1
     else:
       content.hasVote = -1
+    content.recommendations = [content]
 
   context['badges'] = getBadges(request.user)
   context['notifications'] = getNotification(request.user)
