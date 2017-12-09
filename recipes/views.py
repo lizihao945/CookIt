@@ -119,21 +119,16 @@ def addContent(request):
     context = {}
     errors = []
     context['errors'] = errors
-    form = ContentForm(request.POST)
+    content = Content(user=request.user)
+    form = ContentForm(request.POST, request.FILES, instance=content)
     if form.is_valid():
-      try:
-        content = Content(user=request.user, text=request.POST['text'])
-        content.save()
-      except Exception as e:
-        errors.append(e)
-        context['form'] = form
-        return render(request, 'recipes/stream.html', context)
-      context['user'] = request.user
-      context['contents'] = Content.objects.all()
-      return redirect('myRecipes')
+      form.save()
     else:
-      errors.append(form.errors)
-      return render(request, 'recipes/stream.html', context)
+      print(form.errors)
+
+    context['user'] = request.user
+    context['contents'] = Content.objects.all()
+    return redirect('myRecipes')
   else:
     return redirect('myRecipes')
 

@@ -7,7 +7,6 @@ from recipes.manager import FavoriteManager, VoteManager
 
 class Bloguser(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
-	picture = models.ImageField(upload_to='cookit-headshots', blank=True)
 
 	def __str__(self):
 		return str(self.user)
@@ -16,6 +15,8 @@ class Content(models.Model):
 	user = models.ForeignKey(User, blank=False, null=False)
 	text = models.CharField(max_length=10000)
 	created = models.DateTimeField(auto_now_add=True)
+	minute = models.IntegerField(blank=False)
+	img = models.ImageField(upload_to='content_img')
 
 	def __str__(self):
 		return str(self.user) + ': ' + str(self.text)
