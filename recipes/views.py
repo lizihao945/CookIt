@@ -105,41 +105,25 @@ def home(request):
   return render(request, 'recipes/stream.html', context)
 
 @login_required
-def myRecipes(request):
-  context = {}
-  bloguser = Bloguser.objects.get(user=request.user)
-  context['bloguser'] = bloguser
-  context['page'] = 'myRecipes'
-  context['contents'] = list(Content.objects.order_by('-created'))
-  return render(request, 'recipes/stream.html', context)
-
-@login_required
 def addContent(request):
   if request.method == 'POST':
     context = {}
     errors = []
     context['errors'] = errors
-    form = ContentForm(request.POST)
+    content = Content(user=request.user)
+
+    request.POST['text'] = request.POST['ingredients'] + request.POST['text']
+    form = ContentForm(request.POST, request.FILES, instance=content)
     if form.is_valid():
-      try:
-        name_text = request.POST['recipe-name']
-        ingredients_text = request.POST['recipe-ingredients']
-        steps_text = request.POST['recipe-steps']
-        final_text = name_text + ingredients_text + steps_text
-        content = Content(user=request.user, text=final_text)
-        content.save()
-      except Exception as e:
-        errors.append(e)
-        context['form'] = form
-        return render(request, 'recipes/stream.html', context)
-      context['user'] = request.user
-      context['contents'] = Content.objects.all()
-      return redirect('myRecipes')
+      form.save()
     else:
-      errors.append(form.errors)
-      return render(request, 'recipes/stream.html', context)
+      print(form.errors)
+
+    context['user'] = request.user
+    context['contents'] = Content.objects.all()
+    return redirect('home')
   else:
-    return redirect('myRecipes')
+    return redirect('home')
 
 @login_required
 def deleteContent(request, contentId):
@@ -307,16 +291,3 @@ def addTag(request):
 def clearNotifications(request):
   clearAllNotifications(request.user)
   return redirect('home')
-
-def badges(request):
-  context = {}
-
-  if not request.user.is_anonymous:
-    bloguser = Bloguser.objects.get(user=request.user)
-    context['bloguser'] = bloguser
-
-  context['badges'] = getBadges(request.user)
-  context['notifications'] = getNotification(request.user)
-
-  return render(request, 'recipes/badges.html', context)
-

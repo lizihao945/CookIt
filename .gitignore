@@ -21,3 +21,4 @@ tests/report/
 recipes/migrations/
 
 db.sqlite3
+content_img

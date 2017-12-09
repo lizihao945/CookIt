@@ -81,24 +81,7 @@ class UserForm(forms.ModelForm):
 		{'class': 'form-control', 'placeholder': 'Confirm Password'}
 	))
 
-class BloguserForm(forms.ModelForm):
+class ContentForm(forms.ModelForm):
 	class Meta:
-		model = Bloguser
-		exclude = ('user',)
-		widgets = {
-			'age': forms.NumberInput(attrs=
-					{'class': 'form-control', 'placeholder': 'Enter your age'}
-			),
-			'bio': forms.Textarea(attrs=
-					{'class': 'form-control', 'placeholder': 'You can type a short bio here (within 420 characters)'}
-			),
-			'picture': forms.FileInput(),
-		}
-
-		labels = {
-			'age': _('Enter your age'),
-			'bio': _('Short Bio'),
-		}
-
-class ContentForm(forms.Form):
-	text = forms.CharField(max_length=10000)
+		model = Content
+		exclude = ['user']
