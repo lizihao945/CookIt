@@ -25,6 +25,8 @@ from recipes.notifications import *
 # for searching
 import re
 
+stopwords = set(["i", "want", "eat", "lunch", "dinner", "breakfast", "how", "what", "why", "cook", "make", "a", "an", "and", "are", "as", "at", "be", "by", "for", "from", "has", "he", "in", "is", "it", "its", "of", "on", "that", "the", "to", "was", "were", "will", "with"])
+
 @transaction.atomic
 def register(request):
   if request.method == 'POST':
@@ -88,7 +90,6 @@ def home(request):
   context['page'] = 'home'
   context['contents'] = list(Content.objects.order_by('-created'))
 
-  stopwords = set(["a", "an", "and", "are", "as", "at", "be", "by", "for", "from", "has", "he", "in", "is", "it", "its", "of", "on", "that", "the", "to", "was", "were", "will", "with"])
   def get_bag(doc_str):
     bag = [w.lower() for w in re.findall('\\w+', doc_str)]
     bag = list(filter(lambda x: x not in stopwords, bag))
@@ -110,7 +111,7 @@ def home(request):
         if (target_content != content):
             target_bag = get_bag(target_content.text)
             relation = float(len(list(filter(lambda x: x in target_bag, list(this_bag))))) / float(len(this_bag))
-            if (relation > 0.2):
+            if (relation > 0.4):
                 recommendation_set.append(target_content)
     content.recommendations = recommendation_set
 
@@ -247,7 +248,6 @@ def search(request):
   original_tokens = re.findall("\w+", original_query)
 
   # drop stop words
-  stopwords = set(["a", "an", "and", "are", "as", "at", "be", "by", "for", "from", "has", "he", "in", "is", "it", "its", "of", "on", "that", "the", "to", "was", "were", "will", "with"])
   original_tokens = list(filter(lambda w : w not in stopwords, original_tokens))
 
   # Empty query, return to home
