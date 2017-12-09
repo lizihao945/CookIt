@@ -10,8 +10,14 @@
 <div class="row">
     <div class="card post-recipe" style="width: 30rem;">
         <div class="card-body">
-            <form method="post" enctype="multipart/form-data" action="{% url 'addContent' %}">
-                <textarea maxlength="10000" type="text" name="text" class="form-control" placeholder="Share your recipe!"></textarea>
+
+            <form method="post" action="{% url 'addContent' %}">
+                <div class="instructions-hide"><h5>Title:</h5></div>
+                <textarea maxlength="10000" type="text" name="title" class="form-control post-recipe post-recipe-hide" style="height: 2em" placeholder="Name your recipe"></textarea>
+                <div class="instructions-hide"><h5>Ingredients:</h5></div>
+                <textarea maxlength="10000" type="text" name="ingredients" class="form-control post-recipe post-recipe-hide" placeholder="What's your ingredients"></textarea>
+                <div class="instructions-hide"><h5>Steps:</h5></div>
+
                 <div class="form-group">
                     <label>Show off your work!</label>
                     <input type="file" class="form-control-file" name="img" accept="image/*">
@@ -25,12 +31,19 @@
                   <option value="50">50 minutes!</option>
                   <option value="60">60 minutes or more!</option>
                 </select>
+
+                {% if user.is_anonymous %}
+                    <textarea maxlength="10000" type="text" name="text" class="form-control post-recipe post-recipe-trigger" placeholder="Sign up to share your recipe!"></textarea>
+                {% else %}
+                    <textarea maxlength="10000" type="text" name="text" class="form-control post-recipe post-recipe-trigger" placeholder="Share your recipe!"></textarea>
+                {% endif %}
+
                 <div class="text-right">
                     <br>
 
                     {% if user.is_anonymous %}
 
-                        <a href="/recipes/register" id="Post" class="btn btn-primary" role="button">Sign Up and Post</a>
+                        <a href="/recipes/register" id="Post" class="btn btn-primary post-recipe" role="button">Sign Up and Post</a>
 
                     {% else %}
 

@@ -111,6 +111,8 @@ def addContent(request):
     errors = []
     context['errors'] = errors
     content = Content(user=request.user)
+
+    request.POST['text'] = request.POST['ingredients'] + request.POST['text']
     form = ContentForm(request.POST, request.FILES, instance=content)
     if form.is_valid():
       form.save()

@@ -18,7 +18,6 @@ build/
 tests/report/
 
 .idea
-recipes/migrations/
 
 db.sqlite3
 content_img
