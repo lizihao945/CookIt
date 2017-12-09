@@ -12,10 +12,10 @@
           <div class="col-md-6">
             <div>
               {% for tag in content.tag_set.all %}
-                <span class="badge badge-pill badge-primary">
+                <a href="recipes/search/?searchQuery={{ tag.text }}"><span class="badge badge-pill badge-primary">
                   <i class="fa fa-tags" aria-hidden="true"></i>
                   {{ tag.text }}
-                </span>
+                </span></a>
               {% endfor %}
             </div>
           </div>
@@ -35,10 +35,10 @@
     {% else %}
         <div>
             {% for tag in content.tag_set.all %}
-              <span class="badge badge-pill badge-primary">
+              <a href="search?searchQuery={{ tag.text }}"><span class="badge badge-pill badge-primary">
                 <i class="fa fa-tags" aria-hidden="true"></i>
                 {{ tag.text }}
-              </span>
+              </span></a>
             {% endfor %}
           </div>
     {% endif %}
