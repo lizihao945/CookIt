@@ -1,5 +1,16 @@
 # CookIt
 
+## Backend of CookIt
+```
+Django 1.11.8
+Please refer to requirements.txt
+```
+
+## How to run
+```
+python manager.py runserver
+```
+
 ## Python Environment Setup
 
 ```
