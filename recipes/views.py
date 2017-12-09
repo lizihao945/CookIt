@@ -289,16 +289,3 @@ def addTag(request):
 def clearNotifications(request):
   clearAllNotifications(request.user)
   return redirect('home')
-
-def badges(request):
-  context = {}
-
-  if not request.user.is_anonymous:
-    bloguser = Bloguser.objects.get(user=request.user)
-    context['bloguser'] = bloguser
-
-  context['badges'] = getBadges(request.user)
-  context['notifications'] = getNotification(request.user)
-
-  return render(request, 'recipes/badges.html', context)
-

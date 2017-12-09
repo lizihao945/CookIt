@@ -8,7 +8,6 @@
     <link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet">
     <link href="{% static "css/fontawesome-all.min.css" %}" rel="stylesheet">
     <link href="{% static "css/recipes.css" %}" rel="stylesheet">
-    <script src="{% static "js/jquery-3.1.1.min.js" %}"></script>
     {% block extra_head %}{% endblock %}
 </head>
 
@@ -27,10 +26,10 @@
                     </div>
                     <h1>Badges</h1>
                     <div>
-                        {% for badge in badges %}
-                            <span class="badge badge-pill badge-success">
+                        {% for name, info in badges %}
+                            <span class="badge badge-pill badge-success" data-toggle="tooltip" data-placement="bottom" title="{{ info }}">
                             <i class="fa fa-trophy" aria-hidden="true"></i>
-                            {{ badge }}
+                            {{ name }}
                             </span>
                         {% endfor %}
                     </div>
@@ -43,6 +42,15 @@
             </div>
         </div>
     </div>
+
+    <script src="{% static "js/jquery-3.1.1.min.js" %}"></script>
+    <script src="{% static "js/popper.min.js" %}"></script>
+    <script src="{% static "js/bootstrap.min.js" %}"></script>
+    <script>
+        $(function () {
+          $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
 </body>
 
 </html>

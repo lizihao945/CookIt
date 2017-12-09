@@ -14,18 +14,18 @@ def getBadges(User):
 
 	# First Recipe
 	if Content.objects.filter(user=User).count() > 0:
-		badges.append("Chef")
+		badges.append(("Chef", "You have your first recipe uploaded!"))
 
 	# First down vote
 	for vote in Vote.objects.filter(user=User):
 		if not vote.isUp:
-			badges.append("Critic")
+			badges.append(("Critic", "Downvote is good!"))
 			break;
 
 	# First up vote
 	for vote in Vote.objects.filter(user=User):
 		if vote.isUp:
-			badges.append("Supporter")
+			badges.append(("Supporter", "Upvote is good!"))
 			break;
 
 	# Number of votes

@@ -3,11 +3,11 @@
 			<div class="card-body">
 			  {% include 'recipes/picture_and_name.html' %}
 			  <p>
-				  {% for badge in badges %}
-				  	<span class="badge badge-pill badge-success">
-                        <i class="fa fa-trophy" aria-hidden="true"></i>
-                        {{ badge }}
-                    </span>
+				  {% for name, info in badges %}
+				      <span class="badge badge-pill badge-success" data-toggle="tooltip" data-placement="bottom" title="{{ info }}">
+				      <i class="fa fa-trophy" aria-hidden="true"></i>
+				      {{ name }}
+				      </span>
 				  {% endfor %}
 				</p>
 			</div>
