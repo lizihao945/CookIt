@@ -87,18 +87,6 @@ def home(request):
     context['bloguser'] = bloguser
   context['page'] = 'home'
   context['contents'] = list(Content.objects.order_by('-created'))
-  for content in context['contents']:
-    content.favCount = Favorite.objects.countOfContent(content)
-    content.hasFav = Favorite.objects.getFavorite(request.user, content)
-    content.voteCount = Vote.objects.countOfContent(content)
-    t = Vote.objects.getVote(request.user, content)
-    if t == None:
-      content.hasVote = 0
-    elif t.isUp == True:
-      content.hasVote = 1
-    else:
-      content.hasVote = -1
-    content.recommendations = [content]
 
   stopwords = set(["a", "an", "and", "are", "as", "at", "be", "by", "for", "from", "has", "he", "in", "is", "it", "its", "of", "on", "that", "the", "to", "was", "were", "will", "with"])
   def get_bag(doc_str):
@@ -106,19 +94,42 @@ def home(request):
     bag = list(filter(lambda x: x not in stopwords, bag))
     return set(bag)
 
-  doc_bags = list(map(lambda x: get_bag(x.text), context['contents']))
-  for idx in range(len(doc_bags)):
-    context['contents'][idx].recommendations = []
-    this_bag = doc_bags[idx]
-    for idx2 in range(len(doc_bags)):
-      if (idx2 != idx):
-        target_bag = doc_bags[idx2]
-        relation = float(len(list(filter(lambda x: x in target_bag, list(this_bag))))) / float(len(this_bag))
-        if (relation > 0.2):
-          context['contents'][idx].recommendations.append(context['contents'][idx2])
+  recommend_for_user = set()
+
+  for content in context['contents']:
+    user_in_favor = False
+    content.favCount = Favorite.objects.countOfContent(content)
+    content.hasFav = Favorite.objects.getFavorite(request.user, content)
+    if content.hasFav is not None:
+      user_in_favor = True
+    content.voteCount = Vote.objects.countOfContent(content)
+
+    recommendation_set = []
+    this_bag = get_bag(content.text)
+    for target_content in context['contents']:
+        if (target_content != content):
+            target_bag = get_bag(target_content.text)
+            relation = float(len(list(filter(lambda x: x in target_bag, list(this_bag))))) / float(len(this_bag))
+            if (relation > 0.2):
+                recommendation_set.append(target_content)
+    content.recommendations = recommendation_set
+
+    t = Vote.objects.getVote(request.user, content)
+    if t == None:
+      content.hasVote = 0
+    elif t.isUp == True:
+      content.hasVote = 1
+      user_in_favor = True
+    else:
+      content.hasVote = -1
+
+    if user_in_favor:
+      recommend_for_user.update(recommendation_set)
+
 
   context['badges'] = getBadges(request.user)
   context['notifications'] = getNotification(request.user)
+  context['suggestions'] = list(recommend_for_user)
 
   return render(request, 'recipes/stream.html', context)
 

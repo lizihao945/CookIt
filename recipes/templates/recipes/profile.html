@@ -1,7 +1,7 @@
 <div class="row">
     <div class="card" style="width: 20rem;">
-			<div class="card-body">
-			  {% include 'recipes/picture_and_name.html' %}
+		<div class="card-body">
+			{% include 'recipes/picture_and_name.html' %}
 			  <p>
 				  {% for name, info in badges %}
 				      <span class="badge badge-pill badge-success" data-toggle="tooltip" data-placement="bottom" title="{{ info }}">
@@ -10,6 +10,14 @@
 				      </span>
 				  {% endfor %}
 				</p>
-			</div>
+
+                {% if suggestions %}
+                    <h5> Suggested for you:</h5>
+                    <h6 class="text-muted"> based on liked & up voted</h6>
+                    {% for content in suggestions %}
+                        <button type="button" class="btn btn-sm btn-info" data-toggle="popover" title="{{ content.title }}" data-content="{{ content.text }}">{{ content.title }}</button>
+                    {% endfor %}
+                {% endif %}
+        </div>
 	</div>
 </div>
