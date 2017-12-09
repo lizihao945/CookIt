@@ -105,15 +105,6 @@ def home(request):
   return render(request, 'recipes/stream.html', context)
 
 @login_required
-def myRecipes(request):
-  context = {}
-  bloguser = Bloguser.objects.get(user=request.user)
-  context['bloguser'] = bloguser
-  context['page'] = 'myRecipes'
-  context['contents'] = list(Content.objects.order_by('-created'))
-  return render(request, 'recipes/stream.html', context)
-
-@login_required
 def addContent(request):
   if request.method == 'POST':
     context = {}
@@ -128,9 +119,9 @@ def addContent(request):
 
     context['user'] = request.user
     context['contents'] = Content.objects.all()
-    return redirect('myRecipes')
+    return redirect('home')
   else:
-    return redirect('myRecipes')
+    return redirect('home')
 
 @login_required
 def deleteContent(request, contentId):
