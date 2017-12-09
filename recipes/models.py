@@ -13,6 +13,7 @@ class Bloguser(models.Model):
 
 class Content(models.Model):
 	user = models.ForeignKey(User, blank=False, null=False)
+	title = models.CharField(max_length=100)
 	text = models.CharField(max_length=10000)
 	created = models.DateTimeField(auto_now_add=True)
 	minute = models.IntegerField(blank=False)

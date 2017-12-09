@@ -5,35 +5,32 @@
     <p class="card-text"> {{ content.text | linebreaks }} </p>
 
     {% if not user.is_anonymous %}
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6">
+            <div>
+              {% for tag in content.tag_set.all %}
+                <span class="badge badge-pill badge-primary">
+                  <i class="fa fa-tags" aria-hidden="true"></i>
+                  {{ tag.text }}
+                </span>
+              {% endfor %}
+            </div>
+          </div>
 
-    <div class="container">
-      <div class="row">
-        <div class="col-md-6">
-          <div>
-            {% for tag in content.tag_set.all %}
-              <span class="badge badge-pill badge-primary">
-                <i class="fa fa-tags" aria-hidden="true"></i>
-                {{ tag.text }}
-              </span>
-            {% endfor %}
+          <div class="col-md-6">
+            <form action="{% url 'addTag' %}" method="post">
+              {% csrf_token %}
+              <input name="contentId" value="{{ content.pk }}" type="hidden">
+              <div class="input-group">
+                <input name="tag" type="text" class="form-control" placeholder="Add tag">
+                <button class="btn btn-success btn-sm" type="submit" value="Submit">+</button>
+              </div>
+            </form>
           </div>
         </div>
-
-        <div class="col-md-6">
-          <form action="{% url 'addTag' %}" method="post">
-            {% csrf_token %}
-            <input name="contentId" value="{{ content.pk }}" type="hidden">
-            <div class="input-group">
-              <input name="tag" type="text" class="form-control" placeholder="Add tag">
-              <button class="btn btn-success btn-sm" type="submit" value="Submit">+</button>
-            </div>
-          </form>
-        </div>
       </div>
-    </div>
-
     {% else %}
-
         <div>
             {% for tag in content.tag_set.all %}
               <span class="badge badge-pill badge-primary">
@@ -42,11 +39,18 @@
               </span>
             {% endfor %}
           </div>
-
     {% endif %}
 
     {% if not user.is_anonymous %}
       {% include 'fav/fav_block.html' %}
+    {% endif %}
+
+    {% if recommendations %}
+      <br>
+      <h4>You may also like</h4>
+      {% for content in recommendations %}
+        <button type="button" class="btn btn-sm btn-info" data-toggle="popover" title="{{ content.title }}" data-content="{{ content.text }}">Click to toggle popover</button>
+      {% endfor %}
     {% endif %}
   </div>
 
