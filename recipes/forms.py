@@ -84,4 +84,4 @@ class UserForm(forms.ModelForm):
 class ContentForm(forms.ModelForm):
 	class Meta:
 		model = Content
-		exclude = ['user']
+		exclude = ['text', 'user', 'img']

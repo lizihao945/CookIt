@@ -12,45 +12,47 @@
         <div class="card-body">
 
             <form method="post" action="{% url 'addContent' %}">
-                <div class="instructions-hide"><h5>Title:</h5></div>
-                <textarea maxlength="10000" type="text" name="title" class="form-control post-recipe post-recipe-hide" style="height: 2em" placeholder="Name your recipe"></textarea>
-                <div class="instructions-hide"><h5>Ingredients:</h5></div>
-                <textarea maxlength="10000" type="text" name="ingredients" class="form-control post-recipe post-recipe-hide" placeholder="What's your ingredients"></textarea>
-                <div class="instructions-hide"><h5>Steps:</h5></div>
-
-                <div class="form-group">
-                    <label>Show off your work!</label>
-                    <input type="file" class="form-control-file" name="img" accept="image/*">
-                </div>
-                Cook in
-                <select name="minute" class="form-control form-control-sm">
-                  <option value="10">10 minutes!</option>
-                  <option value="20">20 minutes!</option>
-                  <option value="30">30 minutes!</option>
-                  <option value="40">40 minutes!</option>
-                  <option value="50">50 minutes!</option>
-                  <option value="60">60 minutes or more!</option>
-                </select>
-
-                {% if user.is_anonymous %}
-                    <textarea maxlength="10000" type="text" name="text" class="form-control post-recipe post-recipe-trigger" placeholder="Sign up to share your recipe!"></textarea>
-                {% else %}
-                    <textarea maxlength="10000" type="text" name="text" class="form-control post-recipe post-recipe-trigger" placeholder="Share your recipe!"></textarea>
-                {% endif %}
-
-                <div class="text-right">
+                <div class="instructions-hide"><h5 id="prompt">Title:</h5>
+                    <textarea id="content_title" maxlength="10000" type="text" name="title" class="form-control post-recipe post-recipe-hide" style="height: 2em" placeholder="Share your recipe!"></textarea>
                     <br>
+                </div>
 
+                <div id="content_detail">
+                    <div class="instructions-hide"><h5>Ingredients:</h5></div>
+                    <textarea maxlength="10000" type="text" name="ingredients" class="form-control post-recipe post-recipe-hide" placeholder="What's your ingredients"></textarea>
+                    <br>
+                    <div class="instructions-hide"><h5>Cook time:</h5></div>
+                    <select name="minute" class="form-control form-control-sm">
+                      <option value="10">10 minutes!</option>
+                      <option value="20">20 minutes!</option>
+                      <option value="30">30 minutes!</option>
+                      <option value="40">40 minutes!</option>
+                      <option value="50">50 minutes!</option>
+                      <option value="60">60 minutes or more!</option>
+                    </select>
+                    <br>
+                    <div class="instructions-hide"><h5>Steps:</h5></div>
                     {% if user.is_anonymous %}
-
-                        <a href="/recipes/register" id="Post" class="btn btn-primary post-recipe" role="button">Sign Up and Post</a>
-
+                        <textarea maxlength="10000" type="text" name="text" class="form-control post-recipe post-recipe-trigger" placeholder="Sign up to share your recipe!"></textarea>
                     {% else %}
-
-                        <button id="Post" class="btn btn-primary post-recipe" type="submit" value="Submit">Post</button>
-
+                        <textarea maxlength="10000" type="text" name="text" class="form-control post-recipe post-recipe-trigger" placeholder="Share your recipe!"></textarea>
                     {% endif %}
+                    <br>
+                    <div class="instructions-hide"><h5>Upload a file!</h5></div>
+                    <input type="file" class="form-control-file" name="img" accept="image/*">
+                    <div class="text-right">
+                        <br>
 
+                        {% if user.is_anonymous %}
+
+                            <a href="/recipes/register" id="Post" class="btn btn-primary post-recipe" role="button">Sign Up and Post</a>
+
+                        {% else %}
+
+                            <button id="Post" class="btn btn-primary post-recipe" type="submit" value="Submit">Post</button>
+
+                        {% endif %}
+                    </div>
                 </div>
                 {% csrf_token %}
             </form>
@@ -62,5 +64,14 @@
         {% include 'recipes/content.html' %}
     </div>
     </div>
+    {% block extra_foot %}
+        <script>
+            $( "#content_detail" ).hide();
+            $( "#content_title" ).click(function() {
+                $( "#prompt" ).attr("placeholder", "Title");
+                $( "#content_detail" ).slideDown( "slow", function() {});
+            });
+        </script>
+    {% endblock %}
 </div>
 {% endblock %}

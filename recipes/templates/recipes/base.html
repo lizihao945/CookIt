@@ -34,71 +34,15 @@
     <script src="{% static "js/popper.min.js" %}"></script>
     <script src="{% static "js/bootstrap.min.js" %}"></script>
 
-    {% if not user.is_anonymous %}
-
-        <script>
-        $has_expanded = false;
-        $('textarea.post-recipe-trigger')
-            .focus(function () {
-                if (!$has_expanded) {
-                    $(this).animate({ height: "6em" }, 200);
-                    $(this).attr("placeholder", "What's the steps?");
-                    $('div.instructions-hide').fadeIn(100);
-                    $('textarea.post-recipe-hide').fadeIn(100);
-                    $('button.post-recipe').fadeIn(100);
-                    $('div.post-recipe').animate({ height: "25em" }, 200);
-
-                    $has_expanded = true;
-                }
-            });
-        $('document').ready(function () {
-            $('textarea.post-recipe').animate({ height: "3em" }, 0);
-            $('div.instructions-hide').hide();
-            $('textarea.post-recipe-hide').hide();
-            $('button.post-recipe').hide();
-            $('div.post-recipe').animate({ height: "6em" }, 0);
-
-            $has_expanded = false
-        });
-        </script>
-
-    {% else %}
-
-        <script>
-        $has_expanded = false;
-        $('textarea.post-recipe-trigger')
-            .focus(function () {
-                if (!$has_expanded) {
-                    $(this).animate({ height: "6em" }, 200);
-                    $(this).attr("placeholder", "What's the steps?");
-                    $('div.instructions-hide').fadeIn(100);
-                    $('textarea.post-recipe-hide').fadeIn(100);
-                    $('a.post-recipe').fadeIn(100);
-                    $('div.post-recipe').animate({ height: "25em" }, 200);
-
-                    $has_expanded = true;
-                }
-            });
-        $('document').ready(function () {
-            $('textarea.post-recipe').animate({ height: "3em" }, 0);
-            $('div.instructions-hide').hide();
-            $('textarea.post-recipe-hide').hide();
-            $('a.post-recipe').hide();
-            $('div.post-recipe').animate({ height: "6em" }, 0);
-
-            $has_expanded = false
-        });
-
+    <script>
         $(function () {
           $('[data-toggle="tooltip"]').tooltip()
         })
         $(function () {
           $('[data-toggle="popover"]').popover()
         })
-        </script>
-
-    {% endif %}
-
+    </script>
+    {% block extra_foot %}{% endblock %}
 </body>
 
 </html>

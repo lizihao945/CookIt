@@ -1,8 +1,10 @@
+{% load static %}
 {% for content in contents %}
 
 <div class="card mt-3" id="content_{{ content.pk }}" style="width: 30rem;">
   <div class="card-body">
-    <p class="card-text"> {{ content.text | linebreaks }} </p>
+    <h4 class="card-title">{{ content.title }}</h4>
+    <p class="card-text"> {{ content.text|safe|linebreaks }} </p>
 
     {% if not user.is_anonymous %}
       <div class="container">
