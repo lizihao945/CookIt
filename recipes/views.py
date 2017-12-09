@@ -211,7 +211,10 @@ def dashboard(request):
 
 
 def search(request):
-  original_query = request.POST['searchQuery'].lower()
+  if request.method == 'POST':
+    original_query = request.POST['searchQuery'].lower()
+  else:
+    original_query = request.GET['searchQuery'].lower()
   original_tokens = re.findall("\w+", original_query)
 
   # drop stop words
