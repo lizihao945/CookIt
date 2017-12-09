@@ -51,7 +51,11 @@
       <br>
       <h4>You may also like</h4>
       {% for content in content.recommendations %}
+<<<<<<< HEAD
         <button type="button" class="btn btn-sm btn-info" data-toggle="popover" title="{{ content.title }}" data-content="{{ content.text }}">{{ content.title }}</button>
+=======
+        <button type="button" class="btn btn-sm btn-info" data-toggle="popover" title="{{ content.title }}" data-content="{{ content.text|safe|linebreaks }}">{{ content.title }}</button>
+>>>>>>> a12ccc533d0a1331d1c578d9c92282854097d371
       {% endfor %}
     {% endif %}
   </div>
