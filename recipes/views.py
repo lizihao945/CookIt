@@ -111,7 +111,7 @@ def addContent(request):
     errors = []
     context['errors'] = errors
     content = Content(user=request.user)
-    content.text = "<h6>Ingredients:</h6>" + request.POST['ingredients'] + "<br>" + request.POST['text']
+    content.text = "<h5>Ingredients:</h5>" + request.POST['ingredients'] + "<br><br><h5>Steps:</h5>" + request.POST['text']
 
     form = ContentForm(request.POST, request.FILES, instance=content)
     if form.is_valid():
@@ -231,7 +231,8 @@ def search(request):
   all_matched = []
   partial_matched = []
   for content in unfiltered:
-    docTokens = [w.lower() for w in re.findall('\\w+', content.text)]
+    searchRange = ' '.join([content.user.username, content.title, content.text] + [w.text for w in content.tag_set.all()])
+    docTokens = set([w.lower() for w in re.findall('\\w+', searchRange)])
     all_match = True
     partial_match = False
     for query_token in original_tokens:
